@@ -1,160 +1,190 @@
-# Linux-Dev-Setup
+# Linux Developer Environment Setup Guide
 
-Linux Setup Guide for Development & Security
+<div align="center">
+  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/linux/linux-original.svg" alt="Linux" width="100" height="100"/>
+  <h3>Comprehensive setup guide for Linux-based development environments</h3>
+  <p>Mobile Dev | Web Dev | Database | Cybersecurity</p>
+</div>
 
-This comprehensive guide covers setting up Linux environments for various development and security purposes:
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 
-    Mobile App Development
-    Web Development
-    Database Management
-    Cybersecurity
+This guide provides step-by-step instructions for setting up a complete development environment on Linux distributions, with primary focus on Ubuntu/Debian-based systems. It covers everything from basic system configuration to specialized development stacks.
 
-Table of Contents
+## 📋 Table of Contents
+- [General System Setup](#general-system-setup)
+- [Best Linux Kernels for Development](#best-linux-kernels-for-development)
+- [Mobile App Development](#mobile-app-development)
+- [Web Development](#web-development)
+- [Database Management](#database-management)
+- [Apache2 Web Server Setup](#apache2-web-server-setup)
+- [Laravel Installation & Setup](#laravel-installation--setup)
+- [IDE and Text Editors](#ide-and-text-editors)
+- [Cybersecurity Tools](#cybersecurity-tools)
+- [Virtualization](#virtualization)
+- [Version Control](#version-control)
+- [Containerization and Orchestration](#containerization-and-orchestration)
+- [Troubleshooting](#troubleshooting)
+- [Maintenance](#maintenance)
 
-    General System Setup
-    Best Linux Kernels for Development
-    Mobile App Development
-    Web Development
-    Database Management
-    Apache2 Web Server Setup
-    Laravel Installation & Setup
-    IDE and Text Editors
-    Cybersecurity Tools
+## 🖥️ General System Setup
 
-General System Setup
-Update and Upgrade System
-
-bash
-
+### Update and Upgrade System
+```bash
 sudo apt update
 sudo apt upgrade -y
+```
 
-Essential Development Tools
-
-bash
-
+### Essential Development Tools
+```bash
+# Install basic development packages
 sudo apt install build-essential git curl wget unzip npm nodejs vim -y
+```
 
-SSH Setup
-
-bash
-
+### SSH Setup
+```bash
 sudo apt install openssh-server -y
 sudo systemctl enable ssh
 sudo systemctl start ssh
+```
 
-Terminal Improvements
-
-bash
-
+### Terminal Improvements
+```bash
+# Install and configure Zsh with Oh My Zsh
 sudo apt install zsh -y
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
-Best Linux Kernels for Development
+# Optional: Install Powerlevel10k theme
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+# Then edit ~/.zshrc and set ZSH_THEME="powerlevel10k/powerlevel10k"
 
-Selecting the right kernel can significantly improve performance for development and multitasking. Here are some recommended kernels for development work:
-Liquorix Kernel
+# Install useful plugins
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+# Then edit ~/.zshrc and add them to plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
+```
 
+## 🚀 Best Linux Kernels for Development
+
+### Liquorix Kernel
 A desktop-focused kernel with optimizations for responsiveness and real-time performance, ideal for development workstations.
 
-bash
+<details>
+<summary>📋 Installation Instructions</summary>
 
+```bash
 # Add PPA repository
 sudo add-apt-repository ppa:damentz/liquorix
 sudo apt update
 sudo apt install linux-image-liquorix-amd64 linux-headers-liquorix-amd64 -y
+```
+</details>
 
-Xanmod Kernel
-
+### Xanmod Kernel
 Offers improved system responsiveness and reduced latency, optimized for multitasking and demanding workloads.
 
-bash
+<details>
+<summary>📋 Installation Instructions</summary>
 
+```bash
 # Add repository
 echo 'deb http://deb.xanmod.org releases main' | sudo tee /etc/apt/sources.list.d/xanmod-kernel.list
 wget -qO - https://dl.xanmod.org/gpg.key | sudo apt-key add -
 sudo apt update
 sudo apt install linux-xanmod -y
+```
+</details>
 
-Zen Kernel
-
+### Zen Kernel
 A kernel that prioritizes desktop and workstation performance, with optimizations for multitasking and responsiveness.
 
-bash
+<details>
+<summary>📋 Installation Instructions</summary>
 
+```bash
 # For Ubuntu-based systems
 sudo add-apt-repository ppa:damentz/zen-kernel
 sudo apt update
 sudo apt install linux-image-zen linux-headers-zen -y
+```
+</details>
 
-Ubuntu Low-Latency Kernel
-
+### Ubuntu Low-Latency Kernel
 An official Ubuntu kernel variant optimized for low-latency operations.
 
-bash
+<details>
+<summary>📋 Installation Instructions</summary>
 
+```bash
 sudo apt install linux-image-lowlatency linux-headers-lowlatency -y
+```
+</details>
 
-Installing a Custom Kernel on Arch-based Systems
-
+### Installing a Custom Kernel on Arch-based Systems
 For Arch Linux users, you can use the package manager:
 
-bash
+<details>
+<summary>📋 Installation Instructions</summary>
 
+```bash
 # For Zen kernel
 sudo pacman -S linux-zen linux-zen-headers
 
 # For Xanmod kernel
 yay -S linux-xanmod linux-xanmod-headers
+```
+</details>
 
-After Installing a New Kernel
+### After Installing a New Kernel
+
+<details>
+<summary>📋 Post-Installation Steps</summary>
 
 Update GRUB to include the new kernel in the boot menu:
-
-bash
-
+```bash
 sudo update-grub
+```
 
 Reboot your system to use the new kernel:
-
-bash
-
+```bash
 sudo reboot
+```
 
 Check which kernel you're currently using:
-
-bash
-
+```bash
 uname -r
+```
+</details>
 
-Kernel Tweaking for Development
+### Kernel Tweaking for Development
+
+<details>
+<summary>📋 Performance Optimization</summary>
 
 Adjust swappiness for better performance:
-
-bash
-
+```bash
 # Temporarily set swappiness to 10 (less swapping, better for systems with good RAM)
 sudo sysctl vm.swappiness=10
 
 # To make it permanent
 echo 'vm.swappiness=10' | sudo tee -a /etc/sysctl.conf
+```
 
 Increase file watching limits (useful for Node.js development):
-
-bash
-
+```bash
 echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf
 sudo sysctl -p
+```
+</details>
 
-Laravel Installation & Setup
+## 🚀 Laravel Installation & Setup
 
 Laravel is a popular PHP framework for web application development. Here's how to set it up on your Linux system:
-Prerequisites
 
+### Prerequisites
 Ensure PHP and Composer are installed:
 
-bash
-
+```bash
 # Install PHP and required extensions
 sudo apt update
 sudo apt install php php-cli php-common php-mbstring php-xml php-zip php-curl php-mysql php-pgsql php-sqlite3 php-gd unzip -y
@@ -163,11 +193,10 @@ sudo apt install php php-cli php-common php-mbstring php-xml php-zip php-curl ph
 curl -sS https://getcomposer.org/installer | php
 sudo mv composer.phar /usr/local/bin/composer
 sudo chmod +x /usr/local/bin/composer
+```
 
-Install Laravel via Composer
-
-bash
-
+### Install Laravel via Composer
+```bash
 # Install Laravel installer globally
 composer global require laravel/installer
 
@@ -178,21 +207,19 @@ source ~/.bashrc
 # OR if you use ZSH
 # echo 'export PATH="$PATH:$HOME/.config/composer/vendor/bin"' >> ~/.zshrc
 # source ~/.zshrc
+```
 
-Create a New Laravel Project
-
-bash
-
+### Create a New Laravel Project
+```bash
 # Using Laravel installer
 laravel new my-project
 
 # OR using Composer directly
 composer create-project --prefer-dist laravel/laravel my-project
+```
 
-Configure Environment
-
-bash
-
+### Configure Environment
+```bash
 # Navigate to project directory
 cd my-project
 
@@ -201,49 +228,44 @@ cp .env.example .env
 
 # Generate application key
 php artisan key:generate
+```
 
-Configure Database Connection
-
+### Configure Database Connection
 Edit the .env file to set up database connection:
-
-bash
-
+```bash
 nano .env
+```
 
 Change the following settings:
-
+```
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_DATABASE=laravel
 DB_USERNAME=your_db_username
 DB_PASSWORD=your_db_password
+```
 
-Run Migrations
-
-bash
-
+### Run Migrations
+```bash
 php artisan migrate
+```
 
-Start Development Server
-
-bash
-
+### Start Development Server
+```bash
 php artisan serve
-
+```
 This will start the development server at http://localhost:8000
-Configure Apache for Laravel
+
+### Configure Apache for Laravel
 
 Create a virtual host configuration:
-
-bash
-
+```bash
 sudo nano /etc/apache2/sites-available/laravel.conf
+```
 
 Add the following:
-
-apache
-
+```apache
 <VirtualHost *:80>
     ServerName laravel.local
     ServerAlias www.laravel.local
@@ -258,28 +280,26 @@ apache
     ErrorLog ${APACHE_LOG_DIR}/laravel_error.log
     CustomLog ${APACHE_LOG_DIR}/laravel_access.log combined
 </VirtualHost>
+```
 
 Enable the site and reload Apache:
-
-bash
-
+```bash
 sudo a2ensite laravel.conf
 sudo systemctl reload apache2
+```
 
 Add domain to hosts file:
-
-bash
-
+```bash
 sudo nano /etc/hosts
+```
 
 Add this line:
-
+```
 127.0.0.1   laravel.local www.laravel.local
+```
 
-Setting Proper Permissions
-
-bash
-
+### Setting Proper Permissions
+```bash
 # Set ownership
 sudo chown -R $USER:www-data /path/to/your/laravel
 
@@ -292,23 +312,21 @@ sudo find /path/to/your/laravel -type f -exec chmod 644 {} \;
 # Make storage and bootstrap/cache writable
 sudo chmod -R 775 /path/to/your/laravel/storage
 sudo chmod -R 775 /path/to/your/laravel/bootstrap/cache
+```
 
-Laravel with Nginx
-
+### Laravel with Nginx
 If you prefer Nginx over Apache:
 
-bash
-
+```bash
 # Install Nginx
 sudo apt install nginx -y
 
 # Configure site
 sudo nano /etc/nginx/sites-available/laravel
+```
 
 Add the following configuration:
-
-nginx
-
+```nginx
 server {
     listen 80;
     server_name laravel.local www.laravel.local;
@@ -340,43 +358,39 @@ server {
         deny all;
     }
 }
+```
 
 Enable the site and reload Nginx:
-
-bash
-
+```bash
 sudo ln -s /etc/nginx/sites-available/laravel /etc/nginx/sites-enabled/
 sudo systemctl reload nginx
+```
 
-Laravel Scheduler Setup
-
+### Laravel Scheduler Setup
 Add Laravel's scheduler to crontab:
-
-bash
-
+```bash
 crontab -e
+```
 
 Add this line:
-
+```
 * * * * * cd /path/to/your/laravel && php artisan schedule:run >> /dev/null 2>&1
+```
 
-Install Laravel Valet (Optional)
-
+### Install Laravel Valet (Optional)
 Laravel Valet provides a fast development environment:
 
-bash
-
+```bash
 # Install required packages
 sudo apt install network-manager libnss3-tools jq xsel -y
 
 # Install Valet
 composer global require cpriego/valet-linux
 valet install
+```
 
-Common Laravel Commands
-
-bash
-
+### Common Laravel Commands
+```bash
 # Create a controller
 php artisan make:controller UserController
 
@@ -403,34 +417,29 @@ php artisan view:clear
 
 # Optimize for production
 php artisan optimize
-
-bash
-
+```
+```bash
 sudo apt update
 sudo apt install apache2 -y
+```
 
-Enable Required Modules
-
-bash
-
+### Enable Required Modules
+```bash
 sudo a2enmod rewrite
 sudo a2enmod ssl
 sudo a2enmod headers
 sudo a2enmod proxy
 sudo a2enmod proxy_http
+```
 
-Configure Apache2 Security
-
+### Configure Apache2 Security
 Edit the main configuration file:
-
-bash
-
+```bash
 sudo nano /etc/apache2/conf-available/security.conf
+```
 
 Recommended security settings:
-
-apache
-
+```apache
 # Hide Apache version
 ServerTokens Prod
 ServerSignature Off
@@ -445,17 +454,15 @@ ServerSignature Off
     Options -ExecCGI
     AddHandler cgi-script .cgi .pl .py
 </Directory>
+```
 
-Create a Virtual Host
-
-bash
-
+### Create a Virtual Host
+```bash
 sudo nano /etc/apache2/sites-available/myproject.conf
+```
 
 Basic virtual host configuration:
-
-apache
-
+```apache
 <VirtualHost *:80>
     ServerAdmin webmaster@localhost
     ServerName myproject.local
@@ -471,59 +478,51 @@ apache
     ErrorLog ${APACHE_LOG_DIR}/myproject_error.log
     CustomLog ${APACHE_LOG_DIR}/myproject_access.log combined
 </VirtualHost>
+```
 
 Create the project directory:
-
-bash
-
+```bash
 sudo mkdir -p /var/www/myproject/public_html
 sudo chown -R $USER:$USER /var/www/myproject
 sudo chmod -R 755 /var/www/myproject
+```
 
 Create a test index file:
-
-bash
-
+```bash
 echo '<html><head><title>Test Site</title></head><body><h1>Success! Your virtual host is working!</h1></body></html>' > /var/www/myproject/public_html/index.html
+```
 
-Enable the Virtual Host
-
-bash
-
+### Enable the Virtual Host
+```bash
 sudo a2ensite myproject.conf
 sudo systemctl reload apache2
+```
 
-Setup Local Domain (Optional)
-
+### Setup Local Domain (Optional)
 Add the domain to your hosts file:
-
-bash
-
+```bash
 sudo nano /etc/hosts
+```
 
 Add this line:
-
+```
 127.0.0.1   myproject.local www.myproject.local
+```
 
-SSL Configuration (Optional)
-
+### SSL Configuration (Optional)
 Create a self-signed certificate for development:
-
-bash
-
+```bash
 sudo mkdir -p /etc/apache2/ssl
 sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/apache2/ssl/myproject.key -out /etc/apache2/ssl/myproject.crt
+```
 
 Create an SSL virtual host:
-
-bash
-
+```bash
 sudo nano /etc/apache2/sites-available/myproject-ssl.conf
+```
 
 Add the following configuration:
-
-apache
-
+```apache
 <VirtualHost *:443>
     ServerAdmin webmaster@localhost
     ServerName myproject.local
@@ -549,26 +548,22 @@ apache
     
     BrowserMatch "MSIE [2-6]" nokeepalive ssl-unclean-shutdown downgrade-1.0 force-response-1.0
 </VirtualHost>
+```
 
 Enable SSL site:
-
-bash
-
+```bash
 sudo a2ensite myproject-ssl.conf
 sudo systemctl reload apache2
+```
 
-Apache Performance Tuning
-
+### Apache Performance Tuning
 Edit the mpm_prefork.conf file for better performance:
-
-bash
-
+```bash
 sudo nano /etc/apache2/mods-available/mpm_prefork.conf
+```
 
 Optimized configuration for development server:
-
-apache
-
+```apache
 <IfModule mpm_prefork_module>
     StartServers             5
     MinSpareServers          5
@@ -576,11 +571,10 @@ apache
     MaxRequestWorkers       150
     MaxConnectionsPerChild   0
 </IfModule>
+```
 
-Common Apache Commands
-
-bash
-
+### Common Apache Commands
+```bash
 # Start Apache
 sudo systemctl start apache2
 
@@ -610,101 +604,92 @@ sudo a2enmod module_name
 
 # Disable module
 sudo a2dismod module_name
+```
 
-Troubleshooting Apache
-
+### ❓ Troubleshooting Apache
 Check error logs:
-
-bash
-
+```bash
 sudo tail -f /var/log/apache2/error.log
+```
 
 Check access logs:
-
-bash
-
+```bash
 sudo tail -f /var/log/apache2/access.log
+```
 
 Fix permissions issues:
-
-bash
-
+```bash
 sudo chown -R www-data:www-data /var/www/myproject
 sudo find /var/www/myproject -type d -exec chmod 755 {} \;
 sudo find /var/www/myproject -type f -exec chmod 644 {} \;
+```
 
-Android Development
-Install JDK
+### Android Development
 
-bash
-
+#### Install JDK
+```bash
 sudo apt install openjdk-17-jdk -y
+```
 
-Install Android Studio
-
-bash
-
+#### Install Android Studio
+```bash
 sudo snap install android-studio --classic
+```
 
-Setting up Environment Variables (add to ~/.bashrc or ~/.zshrc)
-
-bash
-
+#### Setting up Environment Variables (add to ~/.bashrc or ~/.zshrc)
+```bash
 export ANDROID_HOME=$HOME/Android/Sdk
 export PATH=$PATH:$ANDROID_HOME/emulator
 export PATH=$PATH:$ANDROID_HOME/tools
 export PATH=$PATH:$ANDROID_HOME/tools/bin
 export PATH=$PATH:$ANDROID_HOME/platform-tools
+```
 
-Flutter Development
-Install Flutter
+### Flutter Development
 
-bash
-
+#### Install Flutter
+```bash
 sudo snap install flutter --classic
 flutter doctor
+```
 
-Install Additional Dependencies
-
-bash
-
+#### Install Additional Dependencies
+```bash
 sudo apt install clang cmake ninja-build pkg-config libgtk-3-dev -y
+```
 
-React Native Development
-Install Node.js and npm
+### React Native Development
 
-bash
-
+#### Install Node.js and npm
+```bash
 curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
 sudo apt install -y nodejs
+```
 
-Install React Native CLI
-
-bash
-
+#### Install React Native CLI
+```bash
 sudo npm install -g react-native-cli
+```
 
-Web Development
-Frontend Development Tools
-Install Node Version Manager (NVM)
+## 🌐 Web Development
 
-bash
+### Frontend Development Tools
 
+#### Install Node Version Manager (NVM)
+```bash
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
 source ~/.bashrc  # or source ~/.zshrc if using zsh
 nvm install node  # installs latest version
 nvm install --lts  # installs LTS version
+```
 
-Install Yarn
-
-bash
-
+#### Install Yarn
+```bash
 npm install -g yarn
+```
 
-Install Frontend Frameworks/Tools
-
-bash
-
+#### Install Frontend Frameworks/Tools
+```bash
 # Angular
 npm install -g @angular/cli
 
@@ -713,64 +698,58 @@ npm install -g @vue/cli
 
 # React (Create React App)
 npm install -g create-react-app
+```
 
-Backend Development Tools
-Install Python and pip
+### Backend Development Tools
 
-bash
-
+#### Install Python and pip
+```bash
 sudo apt install python3 python3-pip python3-venv -y
+```
 
-Install Django and Flask
-
-bash
-
+#### Install Django and Flask
+```bash
 pip3 install django flask
+```
 
-Install Docker
-
-bash
-
+#### Install Docker
+```bash
 sudo apt install docker.io docker-compose -y
 sudo systemctl enable docker
 sudo systemctl start docker
 sudo usermod -aG docker $USER
+```
 
-Install PHP
-
-bash
-
+#### Install PHP
+```bash
 sudo apt install php php-cli php-fpm php-json php-common php-mysql php-zip php-gd php-mbstring php-curl php-xml php-pear php-bcmath -y
+```
 
-Install Composer (PHP)
-
-bash
-
+#### Install Composer (PHP)
+```bash
 curl -sS https://getcomposer.org/installer | php
 sudo mv composer.phar /usr/local/bin/composer
+```
 
-Database Management
-MySQL/MariaDB
+## 💾 Database Management
 
-bash
-
+### MySQL/MariaDB
+```bash
 sudo apt install mysql-server -y
 sudo systemctl enable mysql
 sudo systemctl start mysql
 sudo mysql_secure_installation
+```
 
-PostgreSQL
-
-bash
-
+### PostgreSQL
+```bash
 sudo apt install postgresql postgresql-contrib -y
 sudo systemctl enable postgresql
 sudo systemctl start postgresql
+```
 
-MongoDB
-
-bash
-
+### MongoDB
+```bash
 # Import the public key
 curl -fsSL https://www.mongodb.org/static/pgp/server-6.0.asc | sudo apt-key add -
 
@@ -784,19 +763,17 @@ sudo apt update
 sudo apt install mongodb-org -y
 sudo systemctl enable mongod
 sudo systemctl start mongod
+```
 
-Redis
-
-bash
-
+### Redis
+```bash
 sudo apt install redis-server -y
 sudo systemctl enable redis-server
 sudo systemctl start redis-server
+```
 
-Database Management Tools
-
-bash
-
+### Database Management Tools
+```bash
 # MySQL Workbench
 sudo apt install mysql-workbench -y
 
@@ -805,60 +782,54 @@ sudo apt install pgadmin4 -y
 
 # DBeaver (Universal DB tool)
 sudo snap install dbeaver-ce
+```
 
-Cybersecurity Tools
-Basic Security Tools
+## 🔒 Cybersecurity Tools
 
-bash
-
+### Basic Security Tools
+```bash
 sudo apt install nmap wireshark tcpdump aircrack-ng netcat-openbsd -y
+```
 
-Penetration Testing Tools
-Install Metasploit Framework
+### Penetration Testing Tools
 
-bash
-
+#### Install Metasploit Framework
+```bash
 curl https://raw.githubusercontent.com/rapid7/metasploit-omnibus/master/config/templates/metasploit-framework-wrappers/msfupdate.erb > msfinstall
 chmod 755 msfinstall
 ./msfinstall
+```
 
-Install OWASP ZAP
-
-bash
-
+#### Install OWASP ZAP
+```bash
 sudo snap install zaproxy --classic
+```
 
-Install Burp Suite Community Edition
-
-bash
-
+#### Install Burp Suite Community Edition
+```bash
 sudo apt install burpsuite -y
+```
 
-Forensics Tools
-
-bash
-
+### Forensics Tools
+```bash
 sudo apt install autopsy sleuthkit foremost scalpel testdisk ddrescue -y
+```
 
-Networking and Monitoring
-
-bash
-
+### Networking and Monitoring
+```bash
 sudo apt install tshark tcpdump iftop htop netstat-nat iptraf -y
+```
 
-Vulnerability Scanning
-
-bash
-
+### Vulnerability Scanning
+```bash
 # Install OpenVAS
 sudo apt install openvas -y
 sudo gvm-setup
 sudo gvm-start
+```
 
-Additional Security Tools
-
-bash
-
+### Additional Security Tools
+```bash
 # Install John the Ripper
 sudo apt install john -y
 
@@ -870,11 +841,10 @@ sudo apt install nikto -y
 
 # Install SQLMap
 sudo apt install sqlmap -y
+```
 
-Configure Firewall (UFW)
-
-bash
-
+### Configure Firewall (UFW)
+```bash
 sudo apt install ufw -y
 sudo ufw default deny incoming
 sudo ufw default allow outgoing
@@ -882,54 +852,51 @@ sudo ufw allow ssh
 sudo ufw allow http
 sudo ufw allow https
 sudo ufw enable
+```
 
-Virtualization
-VirtualBox
+## 🖥️ Virtualization
 
-bash
-
+### VirtualBox
+```bash
 sudo apt install virtualbox -y
+```
 
-KVM/QEMU
-
-bash
-
+### KVM/QEMU
+```bash
 sudo apt install qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils virt-manager -y
 sudo systemctl enable libvirtd
 sudo systemctl start libvirtd
 sudo usermod -aG libvirt $USER
 sudo usermod -aG kvm $USER
+```
 
-Version Control
-Git Configuration
+## 📊 Version Control
 
-bash
-
+### Git Configuration
+```bash
 git config --global user.name "Your Name"
 git config --global user.email "your.email@example.com"
+```
 
-Generate SSH Key for GitHub/GitLab
-
-bash
-
+### Generate SSH Key for GitHub/GitLab
+```bash
 ssh-keygen -t ed25519 -C "your.email@example.com"
 eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_ed25519
 cat ~/.ssh/id_ed25519.pub
+```
 
-IDE and Text Editors
-Visual Studio Code
+## 📝 IDE and Text Editors
 
-bash
-
+### Visual Studio Code
+```bash
 sudo snap install code --classic
+```
 
-Cursor IDE
-
+### Cursor IDE
 Cursor is an AI-first code editor built on top of VS Code:
 
-bash
-
+```bash
 # Method 1: Using AppImage
 # Download the AppImage
 wget https://download.cursor.sh/linux/appImage/x64
@@ -957,20 +924,17 @@ sudo apt install -f
 
 # Method 3: Using the snap package
 sudo snap install cursor --classic
+```
 
-Configuration for Cursor IDE
-
+### Configuration for Cursor IDE
 Create a configuration directory and file:
-
-bash
-
+```bash
 mkdir -p ~/.config/cursor
 nano ~/.config/cursor/settings.json
+```
 
 Basic settings to start with:
-
-json
-
+```json
 {
     "editor.fontFamily": "JetBrains Mono, 'Droid Sans Mono', monospace",
     "editor.fontSize": 14,
@@ -983,13 +947,11 @@ json
     "editor.tabSize": 2,
     "terminal.integrated.fontFamily": "monospace"
 }
+```
 
-Install Recommended Extensions for Development
-
+### Install Recommended Extensions for Development
 Using the command line with Cursor:
-
-bash
-
+```bash
 # For JavaScript/TypeScript development
 cursor --install-extension dbaeumer.vscode-eslint
 cursor --install-extension esbenp.prettier-vscode
@@ -1010,34 +972,29 @@ cursor --install-extension eamodio.gitlens
 
 # For Database management
 cursor --install-extension mtxr.sqltools
+```
 
-JetBrains Toolbox
-
-bash
-
+### JetBrains Toolbox
+```bash
 curl -fsSL https://raw.githubusercontent.com/nagygergo/jetbrains-toolbox-install/master/jetbrains-toolbox.sh | bash
+```
 
-Sublime Text
-
-bash
-
+### Sublime Text
+```bash
 wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
 echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
 sudo apt update
 sudo apt install sublime-text -y
+```
 
-Vim Configuration for Development
-
+### Vim Configuration for Development
 Install Vim with enhanced features:
-
-bash
-
+```bash
 sudo apt install vim-gtk3 -y
+```
 
 Create a basic .vimrc configuration:
-
-bash
-
+```bash
 cat > ~/.vimrc << EOL
 syntax on
 set number
@@ -1087,24 +1044,21 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 EOL
+```
 
 Install vim-plug (plugin manager):
-
-bash
-
+```bash
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+```
 
 Install plugins:
-
-bash
-
+```bash
 vim +PlugInstall +qall
+```
 
-Neovim for Development
-
-bash
-
+### Neovim for Development
+```bash
 # Install Neovim
 sudo apt install neovim -y
 
@@ -1162,80 +1116,80 @@ nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 nnoremap <leader>e <cmd>NvimTreeToggle<cr>
 EOL
+```
 
 Install Neovim plugin manager:
-
-bash
-
+```bash
 sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+```
 
 Install plugins:
-
-bash
-
+```bash
 nvim +PlugInstall +qall
+```
 
-Containerization and Orchestration
-Install Docker (if not already installed)
+## 🐳 Containerization and Orchestration
 
-bash
-
+### Install Docker (if not already installed)
+```bash
 sudo apt install docker.io -y
 sudo systemctl enable docker
 sudo systemctl start docker
 sudo usermod -aG docker $USER
+```
 
-Install Docker Compose
-
-bash
-
+### Install Docker Compose
+```bash
 sudo apt install docker-compose -y
+```
 
-Install Kubernetes Tools
-
-bash
-
+### Install Kubernetes Tools
+```bash
 sudo snap install kubectl --classic
 sudo snap install helm --classic
+```
 
-Install Minikube (Local Kubernetes)
-
-bash
-
+### Install Minikube (Local Kubernetes)
+```bash
 curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
 sudo install minikube-linux-amd64 /usr/local/bin/minikube
+```
 
-Troubleshooting
-Common Issues and Solutions
+## Troubleshooting
 
-    Package Installation Failures
-        Try: sudo apt clean && sudo apt update
-    Permission Issues
-        For Docker: sudo usermod -aG docker $USER (log out and log back in)
-        For Android development: sudo chown -R $USER:$USER ~/Android
-    Java Version Conflicts
-        Install alternatives: sudo update-alternatives --config java
-    Node.js Version Issues
-        Use NVM to switch versions: nvm use 14 or nvm use 16
-    Database Connection Issues
-        Check service status: sudo systemctl status mysql
-        Allow remote connections: Edit configuration files in /etc/mysql/mysql.conf.d/
-    Missing Dependencies
-        For common development libraries: sudo apt install libssl-dev libffi-dev
+### Common Issues and Solutions
 
-Maintenance
-System Cleanup
+1. **Package Installation Failures**
+   - Try: `sudo apt clean && sudo apt update`
 
-bash
+2. **Permission Issues**
+   - For Docker: `sudo usermod -aG docker $USER` (log out and log back in)
+   - For Android development: `sudo chown -R $USER:$USER ~/Android`
 
+3. **Java Version Conflicts**
+   - Install alternatives: `sudo update-alternatives --config java`
+
+4. **Node.js Version Issues**
+   - Use NVM to switch versions: `nvm use 14` or `nvm use 16`
+
+5. **Database Connection Issues**
+   - Check service status: `sudo systemctl status mysql`
+   - Allow remote connections: Edit configuration files in `/etc/mysql/mysql.conf.d/`
+
+6. **Missing Dependencies**
+   - For common development libraries: `sudo apt install libssl-dev libffi-dev`
+
+## 🔄 Maintenance
+
+### System Cleanup
+```bash
 sudo apt autoremove -y
 sudo apt autoclean
+```
 
-Update Development Tools
-
-bash
-
+### Update Development Tools
+```bash
 # Node.js packages
 npm update -g
 
@@ -1244,5 +1198,26 @@ pip3 list --outdated | cut -d ' ' -f1 | xargs -n1 pip3 install -U
 
 # Flutter
 flutter upgrade
+```
 
-Feel free to customize this guide according to your specific needs and Linux distribution. This setup is primarily based on Ubuntu/Debian-based systems, but most commands can be adapted for other distributions by replacing package managers (e.g., apt with dnf for Fedora or pacman for Arch Linux).
+---
+
+## 📜 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📣 Acknowledgements
+
+- All the open source projects that make Linux development environments powerful
+- The Linux community for continuous support and innovation
+
+---
+
+<div align="center">
+  <p>Made with ❤️ for the Linux developer community</p>
+  <p>© 2025 | All Rights Reserved</p>
+</div>
