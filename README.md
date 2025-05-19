@@ -936,17 +936,28 @@ nano ~/.config/cursor/settings.json
 Basic settings to start with:
 ```json
 {
-    "editor.fontFamily": "JetBrains Mono, 'Droid Sans Mono', monospace",
-    "editor.fontSize": 14,
-    "editor.lineHeight": 1.5,
-    "workbench.colorTheme": "Default Dark+",
-    "terminal.integrated.shell.linux": "/bin/bash",
-    "editor.formatOnSave": true,
-    "workbench.startupEditor": "newUntitledFile",
-    "explorer.confirmDelete": false,
-    "editor.tabSize": 2,
-    "terminal.integrated.fontFamily": "monospace"
+    "window.commandCenter": 1,
+    "workbench.colorTheme": "Palenight Operator",
+    "workbench.iconTheme": "material-icon-theme",
+    "workbench.productIconTheme": "material-product-icons",
+    "editor.fontSize": 16,
+   "editor.fontFamily": "JetBrains Mono",
+   "workbench.startupEditor": "none",
+   "workbench.tips.enabled": false,
+   "editor.minimap.enabled": false,
+   "breadcrumbs.enabled": false,
+   "workbench.tree.indent": 8,
+"window.zoomLevel": 1.2,
+"javascript.updateImportsOnFileMove.enabled": "always",
+"explorer.confirmDelete": false,
+"editor.stickyScroll.enabled": false,
+"editor.cursorStyle": "block",
+"editor.cursorBlinking": "phase",
+"workbench.editor.showTabs": "single",
+"window.customTitleBarVisibility": "auto",
+"workbench.sideBar.location": "right",
 }
+
 ```
 
 ### Install Recommended Extensions for Development
