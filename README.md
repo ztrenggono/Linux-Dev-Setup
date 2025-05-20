@@ -64,6 +64,73 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:
 # Then edit ~/.zshrc and add them to plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
 ```
 
+### Application That I Use for Daily/Dev
+```here:
+# Cursor IDE
+https://www.cursor.com/
+
+Extension that i use:
+auto rename tag
+palenight
+everforest
+live server
+material icon theme
+material icon product icons
+minimal
+postman
+tailwind css inteligance
+react native snipset
+gylph for vs code 
+
+[Desktop Entry]
+Name=Cursor IDE
+Exec=/home/ztrenggono/Downloads/Cursor-0.48.8-x86_64.AppImage
+Icon=/home/ztrenggono/Downloads/icons8-cursor-ai-48.png
+Type=Application
+Categories=Development;
+
+save at local share application
+
+# Zen Browser
+https://zen-browser.app/download/
+flatpak install flathub app.zen_browser.zen
+
+# Postman
+flatpak install flathub com.getpostman.Postman
+
+# Alacritty Terminal
+sudo apt update
+sudo apt install alacritty
+
+# DBeaver
+flatpak install flathub io.dbeaver.DBeaverCommunity
+
+# Android Studio
+check download instruction at bottom
+
+# WireShark
+check download instruction at bottom
+
+# RustDesk
+flatpak install flathub com.rustdesk.RustDesk
+
+# Blanket
+flatpak install flathub com.rafaelmardojai.Blanket
+
+# Progress
+flatpak install flathub io.github.smolblackcat.Progress
+
+# Spotify
+flatpak install flathub com.spotify.Client
+
+# BleachBit
+sudo apt install bleachbit
+
+# Deja dup backup
+flatpak install flathub org.gnome.DejaDup
+
+```
+
 ## 🚀 Best Linux Kernels for Development
 
 ### Liquorix Kernel
@@ -933,7 +1000,7 @@ mkdir -p ~/.config/cursor
 nano ~/.config/cursor/settings.json
 ```
 
-Basic settings to start with:
+These are the settings i use for the cursor:
 ```json
 {
     "window.commandCenter": 1,
